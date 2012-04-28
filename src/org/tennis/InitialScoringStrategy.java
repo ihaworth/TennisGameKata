@@ -15,48 +15,9 @@ public class InitialScoringStrategy implements ScoringStrategy
 	}
 
 	@Override
-	public String getScore()
-	{
-		if (advantageA())
-			return "Advantage A";
-
-		if (advantageB())
-			return "Advantage B";
-
-		if (deuce())
-			return "Deuce";
-
-		if (getaScoreIndex() >= scores.length)
-			return "A Wins";
-
-		if (getbScoreIndex() >= scores.length)
-			return "B Wins";
-
-		return scores[getaScoreIndex()] + "-" + scores[getbScoreIndex()];
-	}
-
-	boolean advantageA()
-	{
-		return getaScoreIndex() == scores.length && getbScoreIndex() == scores.length - 1;
-	}
-
-	boolean advantageB()
-	{
-		return getaScoreIndex() == scores.length - 1 && getbScoreIndex() == scores.length;
-	}
-
-	boolean deuce()
-	{
-		return getaScoreIndex() == scores.length - 1 && getbScoreIndex() == scores.length - 1;
-	}
-
-	@Override
 	public void aScores()
 	{
-		if (advantageB())
-			setbScoreIndex(getbScoreIndex() - 1);
-		else
-			setaScoreIndex(getaScoreIndex() + 1);
+		setaScoreIndex(getaScoreIndex() + 1);
 
 		if (deuce())
 			tennisGame.deuce();
@@ -65,13 +26,27 @@ public class InitialScoringStrategy implements ScoringStrategy
 	@Override
 	public void bScores()
 	{
-		if (advantageA())
-			setaScoreIndex(getaScoreIndex() - 1);
-		else
-			setbScoreIndex(getbScoreIndex() + 1);
+		setbScoreIndex(getbScoreIndex() + 1);
 
 		if (deuce())
 			tennisGame.deuce();
+	}
+
+	@Override
+	public String getScore()
+	{
+		if (getaScoreIndex() == scores.length)
+			return "A Wins";
+
+		if (getbScoreIndex() == scores.length)
+			return "B Wins";
+
+		return scores[getaScoreIndex()] + "-" + scores[getbScoreIndex()];
+	}
+
+	private boolean deuce()
+	{
+		return getaScoreIndex() == scores.length - 1 && getbScoreIndex() == scores.length - 1;
 	}
 
 	private int getaScoreIndex()
