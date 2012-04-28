@@ -2,7 +2,8 @@ package org.tennis;
 
 public class InitialScoringStrategy implements ScoringStrategy
 {
-	private final static String[] scores = {"0", "15", "30", "40"};
+	private static final String[] scores = {"0", "15", "30", "40"};
+	private static final int INDEX_OF_40 = scores.length - 1;
 
 	private int aScoreIndex = 0;
 	private int bScoreIndex = 0;
@@ -17,35 +18,60 @@ public class InitialScoringStrategy implements ScoringStrategy
 	@Override
 	public void aScores()
 	{
-		aScoreIndex = aScoreIndex + 1;
+		aScoreIndex++;
 
-		if (deuce())
+		if (isDeuce())
 			tennisGame.deuce();
 	}
 
 	@Override
 	public void bScores()
 	{
-		bScoreIndex = bScoreIndex + 1;
+		bScoreIndex++;
 
-		if (deuce())
+		if (isDeuce())
 			tennisGame.deuce();
 	}
 
 	@Override
 	public String getScore()
 	{
-		if (aScoreIndex == scores.length)
+		if (aWon())
 			return "A Wins";
 
-		if (bScoreIndex == scores.length)
+		if (bWon())
 			return "B Wins";
 
+		return runningScore();
+	}
+
+	private String runningScore()
+	{
 		return scores[aScoreIndex] + "-" + scores[bScoreIndex];
 	}
 
-	private boolean deuce()
+	private boolean aWon()
 	{
-		return aScoreIndex == scores.length - 1 && bScoreIndex == scores.length - 1;
+		return aScoreIndex == scores.length;
+	}
+
+	private boolean bWon()
+	{
+		return bScoreIndex == scores.length;
+	}
+
+	private boolean isDeuce()
+	{
+		return aScores40() && bScores40();
+	}
+
+	private boolean aScores40()
+	{
+		return aScoreIndex == INDEX_OF_40;
+	}
+
+	private boolean bScores40()
+	{
+		return bScoreIndex == INDEX_OF_40;
 	}
 }
