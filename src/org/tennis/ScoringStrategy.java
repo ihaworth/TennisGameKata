@@ -5,5 +5,5 @@ public interface ScoringStrategy
 	void aScores();
 	void bScores();
 
-	String getScore(TennisGame tennisGame);
+	String getScore();
 }

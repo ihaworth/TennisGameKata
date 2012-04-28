@@ -4,21 +4,10 @@ public class InitialScoringStrategy implements ScoringStrategy
 {
 	private final static String[] scores = {"0", "15", "30", "40"};
 
-	private int aScoreIndex = 0;
-	public int getaScoreIndex()
-	{
-		return aScoreIndex;
-	}
-
-	public int getbScoreIndex()
-	{
-		return bScoreIndex;
-	}
-
-	private int bScoreIndex = 0;
+//	private int aScoreIndex = 0;
+//	private int bScoreIndex = 0;
 
 	private final TennisGame tennisGame;
-
 
 	public InitialScoringStrategy(TennisGame tennisGame)
 	{
@@ -26,7 +15,7 @@ public class InitialScoringStrategy implements ScoringStrategy
 	}
 
 	@Override
-	public String getScore(TennisGame tennisGame)
+	public String getScore()
 	{
 		if (advantageA())
 			return "Advantage A";
@@ -37,51 +26,71 @@ public class InitialScoringStrategy implements ScoringStrategy
 		if (deuce())
 			return "Deuce";
 
-		if (aScoreIndex >= scores.length)
+		if (getaScoreIndex() >= scores.length)
 			return "A Wins";
 
-		if (bScoreIndex >= scores.length)
+		if (getbScoreIndex() >= scores.length)
 			return "B Wins";
 
-		return scores[aScoreIndex] + "-" + scores[bScoreIndex];
+		return scores[getaScoreIndex()] + "-" + scores[getbScoreIndex()];
 	}
 
 	boolean advantageA()
 	{
-		return aScoreIndex == scores.length && bScoreIndex == scores.length - 1;
+		return getaScoreIndex() == scores.length && getbScoreIndex() == scores.length - 1;
 	}
 
 	boolean advantageB()
 	{
-		return aScoreIndex == scores.length - 1 && bScoreIndex == scores.length;
+		return getaScoreIndex() == scores.length - 1 && getbScoreIndex() == scores.length;
 	}
 
 	boolean deuce()
 	{
-		return aScoreIndex == scores.length - 1 && bScoreIndex == scores.length - 1;
+		return getaScoreIndex() == scores.length - 1 && getbScoreIndex() == scores.length - 1;
 	}
 
 	@Override
 	public void aScores()
 	{
 		if (advantageB())
-			bScoreIndex--;
+			setbScoreIndex(getbScoreIndex() - 1);
 		else
-			aScoreIndex++;
+			setaScoreIndex(getaScoreIndex() + 1);
 
-//		if (deuce())
-//			tennisGame.deuce();
+		if (deuce())
+			tennisGame.deuce();
 	}
 
 	@Override
 	public void bScores()
 	{
 		if (advantageA())
-			aScoreIndex--;
+			setaScoreIndex(getaScoreIndex() - 1);
 		else
-			bScoreIndex++;
+			setbScoreIndex(getbScoreIndex() + 1);
 
-//		if (deuce())
-//			tennisGame.deuce();
+		if (deuce())
+			tennisGame.deuce();
+	}
+
+	private int getaScoreIndex()
+	{
+		return tennisGame.aScoreIndex;
+	}
+
+	private void setaScoreIndex(int aScoreIndex)
+	{
+		tennisGame.aScoreIndex = aScoreIndex;
+	}
+
+	private int getbScoreIndex()
+	{
+		return tennisGame.bScoreIndex;
+	}
+
+	private void setbScoreIndex(int bScoreIndex)
+	{
+		tennisGame.bScoreIndex = bScoreIndex;
 	}
 }

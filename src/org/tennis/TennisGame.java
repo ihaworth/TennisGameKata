@@ -3,10 +3,12 @@ package org.tennis;
 public class TennisGame
 {
 	private ScoringStrategy scoringStrategy = new InitialScoringStrategy(this);
+	public int aScoreIndex;
+	public int bScoreIndex;
 
 	public String getScore()
 	{
-		return scoringStrategy.getScore(this);
+		return scoringStrategy.getScore();
 	}
 
 	public void aScores()
@@ -21,6 +23,6 @@ public class TennisGame
 
 	public void deuce()
 	{
-		scoringStrategy = new DeuceScoringStrategy();
+		scoringStrategy = new DeuceScoringStrategy(this);
 	}
 }
