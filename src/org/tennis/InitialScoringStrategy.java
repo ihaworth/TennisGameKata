@@ -19,16 +19,18 @@ public class InitialScoringStrategy implements ScoringStrategy
 	public void aScores()
 	{
 		aScoreIndex++;
-
-		if (isDeuce())
-			tennisGame.deuce();
+		checkForDeuce();
 	}
 
 	@Override
 	public void bScores()
 	{
 		bScoreIndex++;
+		checkForDeuce();
+	}
 
+	private void checkForDeuce()
+	{
 		if (isDeuce())
 			tennisGame.deuce();
 	}
