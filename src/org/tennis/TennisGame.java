@@ -23,6 +23,6 @@ public class TennisGame
 
 	public void deuce()
 	{
-		scoringStrategy = new DeuceScoringStrategy(this);
+		scoringStrategy = new DeuceScoringStrategy();
 	}
 }

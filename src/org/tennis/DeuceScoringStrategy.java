@@ -2,90 +2,49 @@ package org.tennis;
 
 public class DeuceScoringStrategy implements ScoringStrategy
 {
-	private final static String[] scores = {"0", "15", "30", "40"};
+	private boolean advantageA = false;
+	private boolean advantageB = false;
 
-//	private int aScoreIndex = 0;
-//	private int bScoreIndex = 0;
-
-	private final TennisGame tennisGame;
-
-
-	public DeuceScoringStrategy(TennisGame tennisGame)
-	{
-		this.tennisGame = tennisGame;
-	}
+	private boolean aWon = false;
+	private boolean bWon = false;
 
 	@Override
 	public String getScore()
 	{
-		if (advantageA())
-			return "Advantage A";
-
-		if (advantageB())
-			return "Advantage B";
-
-		if (deuce())
-			return "Deuce";
-
-		if (getaScoreIndex() >= scores.length)
+		if (aWon)
 			return "A Wins";
 
-		if (getbScoreIndex() >= scores.length)
+		if (bWon)
 			return "B Wins";
 
-		return scores[getaScoreIndex()] + "-" + scores[getbScoreIndex()];
-	}
+		if (advantageA)
+			return "Advantage A";
 
-	boolean advantageA()
-	{
-		return getaScoreIndex() == scores.length && getbScoreIndex() == scores.length - 1;
-	}
+		if (advantageB)
+			return "Advantage B";
 
-	boolean advantageB()
-	{
-		return getaScoreIndex() == scores.length - 1 && getbScoreIndex() == scores.length;
-	}
-
-	boolean deuce()
-	{
-		return getaScoreIndex() == scores.length - 1 && getbScoreIndex() == scores.length - 1;
-	}
-
-	@Override
-	public void bScores()
-	{
-		if (advantageA())
-			setaScoreIndex(getaScoreIndex() - 1);
-		else
-			setbScoreIndex(getbScoreIndex() + 1);
+		return "Deuce";
 	}
 
 	@Override
 	public void aScores()
 	{
-		if (advantageB())
-			setbScoreIndex(getbScoreIndex() - 1);
+		if (advantageB)
+			advantageB = false;
+		else if (advantageA)
+			aWon = true;
 		else
-			setaScoreIndex(getaScoreIndex() + 1);
+			advantageA = true;
 	}
 
-	private int getaScoreIndex()
+	@Override
+	public void bScores()
 	{
-		return tennisGame.aScoreIndex;
-	}
-
-	private void setaScoreIndex(int aScoreIndex)
-	{
-		tennisGame.aScoreIndex = aScoreIndex;
-	}
-
-	private int getbScoreIndex()
-	{
-		return tennisGame.bScoreIndex;
-	}
-
-	private void setbScoreIndex(int bScoreIndex)
-	{
-		tennisGame.bScoreIndex = bScoreIndex;
+		if (advantageA)
+			advantageA = false;
+		else if (advantageB)
+			bWon = true;
+		else
+			advantageB = true;
 	}
 }
