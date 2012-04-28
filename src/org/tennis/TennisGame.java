@@ -3,8 +3,6 @@ package org.tennis;
 public class TennisGame
 {
 	private ScoringStrategy scoringStrategy = new InitialScoringStrategy(this);
-	public int aScoreIndex;
-	public int bScoreIndex;
 
 	public String getScore()
 	{
